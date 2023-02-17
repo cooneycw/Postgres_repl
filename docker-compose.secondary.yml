@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+  standby-postgres:
+    image: postgres:9.6
+    env_file:
+      - secondary-postgres.env
+    ports:
+      - "5433:5432"
+    volumes:
+      - standby-data:/var/lib/postgresql/data
+    command: postgres -c wal_level=logical -c max_replication_slots=10 -c max_wal_senders=10
+
+volumes:
+  standby-data:
